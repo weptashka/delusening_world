@@ -381,7 +381,7 @@ MonoBehaviour:
   _splash: {fileID: 1034179614}
   _uiSceneName: Assets/Scenes/UI.unity
   _startUpSceneName: Assets/Scenes/StartUp.unity
-  _levelSettings: {fileID: 11400000, guid: 178f3d721cb1d8c4da06924a9e62b936, type: 2}
+  _homeSceneName: HomeScene
   _levelLoader: {fileID: 939253043}
 --- !u!4 &1327095848
 Transform:

@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameWindow : MonoBehaviour
+public class GameWindow : Window
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public override WindowType Type => WindowType.Game;
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] private TMPro.TextMeshPro _coinCount;
+    [SerializeField] private TMPro.TextMeshPro _hpCount;
+
+    private PlayerStorageData _playerStarageData;
+
+    private void Update()
     {
-        
+        _coinCount.text = _playerStarageData.Get(PickableType.Coin).ToString();
+        _hpCount.text = _playerStarageData.Get(PickableType.HP).ToString();
     }
 }

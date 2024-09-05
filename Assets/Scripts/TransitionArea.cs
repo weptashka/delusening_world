@@ -7,17 +7,24 @@ using UnityEngine.SceneManagement;
 
 public class TransitionArea : MonoBehaviour
 {
-    public static event Action<int> TransitionAreaTriggered;
+    [SerializeField] private string _connectedPointId;
+    [SerializeField] private string _sceneName;
 
-    [SerializeField] private int _transitionAreaIndex;
+    private LevelLoader _levelLoader;
+    private UISystem _uiSystem;
+
+    private void Awake()
+    {
+        _levelLoader = LevelLoader.Instance;
+        _uiSystem = UISystem.Instance;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent(out PlayerMovementController player))
         {
-            //SceneManager.LoadScene("Assets/Scenes/Scene_2.unity");
-
-            TransitionAreaTriggered?.Invoke(_transitionAreaIndex);
+            _levelLoader.LoadLevel(_sceneName, _connectedPointId);
+            _uiSystem.OpenWindow(WindowType.Load, true);
         }
     }
 }

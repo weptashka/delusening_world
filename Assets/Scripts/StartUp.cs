@@ -11,20 +11,17 @@ public class StartUp : MonoBehaviour
 
     [SerializeField] private string _uiSceneName;
     [SerializeField] private string _startUpSceneName;
+    [SerializeField] private string _homeSceneName;
 
-    [SerializeField] private UISystem _uiSystem;
-    [SerializeField] private LevelSettings _levelSettings;
     [SerializeField] private LevelLoader _levelLoader;
-    [SerializeField] private SceneSetupper _sceneSetupper;
+    [SerializeField] private PlayerStorageData _playerStorageData;
 
     private void Awake()
     {
         _levelLoader.Init();
-
-        _sceneSetupper.Init();
+        _playerStorageData.Init();
 
         StartCoroutine(Load());
-
     }
 
     private IEnumerator Load()
@@ -37,10 +34,11 @@ public class StartUp : MonoBehaviour
         }
 
         _levelLoader.SceneLoaded += LevelLoaderOnSceneLoaded;
-        _levelLoader.LoadLevel(_levelSettings.LevelsQueue.First());
+
+        _levelLoader.LoadLevel(_homeSceneName, string.Empty);
     }
 
-    private void LevelLoaderOnSceneLoaded(string obj)
+    private void LevelLoaderOnSceneLoaded(string s1, string s2)
     {
         StartCoroutine(Unload());
         _levelLoader.SceneLoaded -= LevelLoaderOnSceneLoaded;

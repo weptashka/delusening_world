@@ -17,19 +17,23 @@ public class PlayerMovementController : BaseCharacterController
         }
         else
         {
-            //moveDirection = new Vector3
-            //{
-            //    x = _playerDirection.forward.x * _joystickController.InputDirection.x,
-            //    y = 0.0f,
-            //    z = _playerDirection.forward.z * _joystickController.InputDirection.y,
-            //};
-
             moveDirection = new Vector3
             {
                 x = _joystickController.InputDirection.x,
                 y = 0.0f,
                 z = _joystickController.InputDirection.y
             };
+
+
+            //if (transform.rotation != Camera.main.transform.localRotation)
+            //{
+            //    moveDirection = transform.localRotation * moveDirection;
+                
+            //}
+            //else
+            //{
+                //moveDirection = Camera.main.transform.localRotation * moveDirection;
+            //}
         }
     }
 }

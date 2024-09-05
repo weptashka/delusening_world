@@ -5,24 +5,17 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public interface ILevelLoader
-{
-    public void Init();
 
-    public event Action<string> SceneLoaded;
-    public void LoadLevel(string sceneName);
-}
-
-public class LevelLoader : MonoBehaviour, ILevelLoader
+public class LevelLoader : MonoBehaviour
 {
     private readonly string _scenesPathStart = "Assets/Scenes/";
     private readonly string _scenesPathEnd = ".unity";
 
+    public event Action<string, string> SceneLoaded;
+
     private string _currentScene = string.Empty;
 
-    private Coroutine _startCourutine;
-
-    public event Action<string> SceneLoaded;
+    private Coroutine _loadLevelCor;
 
     public static LevelLoader _instance;
     public static LevelLoader Instance => _instance;
@@ -32,19 +25,29 @@ public class LevelLoader : MonoBehaviour, ILevelLoader
         _instance = this;
     }
 
-    public Coroutine LoadLevel(string sceneName)
+    //public void LoadLevel(string sceneName)
+    //{
+    //    if (_loadLevelCor != null)
+    //    {
+    //        StopCoroutine(_loadLevelCor);
+    //    }
+
+    //    _loadLevelCor = StartCoroutine(LoadCor(sceneName, string.Empty));
+    //}
+
+    public void LoadLevel(string sceneName, string connectedPointId)
     {
-        if (_startCourutine != null)
+        if (_loadLevelCor != null)
         {
-            StopCoroutine(_startCourutine);
+            StopCoroutine(_loadLevelCor);
         }
 
-        _startCourutine = StartCoroutine(LoadCor(sceneName));
+        GlobalLevelData.CurrentLoadSpawnPointId = connectedPointId;
 
-        return _startCourutine;
+        _loadLevelCor = StartCoroutine(LoadCor(sceneName, connectedPointId));
     }
 
-    private IEnumerator LoadCor(string sceneName)
+    private IEnumerator LoadCor(string sceneName, string connectedPointId)
     {
         if (_currentScene != string.Empty)
         {
@@ -63,11 +66,6 @@ public class LevelLoader : MonoBehaviour, ILevelLoader
             yield return null;
         }
 
-        SceneLoaded?.Invoke(sceneName);
-    }
-
-    void ILevelLoader.LoadLevel(string sceneName)
-    {
-        throw new NotImplementedException();
+        SceneLoaded?.Invoke(sceneName, connectedPointId);
     }
 }
