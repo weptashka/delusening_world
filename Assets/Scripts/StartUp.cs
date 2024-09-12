@@ -14,12 +14,10 @@ public class StartUp : MonoBehaviour
     [SerializeField] private string _homeSceneName;
 
     [SerializeField] private LevelLoader _levelLoader;
-    [SerializeField] private PlayerStorageData _playerStorageData;
 
     private void Awake()
     {
         _levelLoader.Init();
-        _playerStorageData.Init();
 
         StartCoroutine(Load());
     }
@@ -40,9 +38,9 @@ public class StartUp : MonoBehaviour
 
     private void LevelLoaderOnSceneLoaded(string s1, string s2)
     {
+        DontDestroyOnLoad(_levelLoader);
         StartCoroutine(Unload());
         _levelLoader.SceneLoaded -= LevelLoaderOnSceneLoaded;
-
     }
 
     private IEnumerator Unload()
@@ -53,6 +51,8 @@ public class StartUp : MonoBehaviour
 
         while (time <= _hideTime)
         { 
+            progress = time / _hideTime;
+
             _splash.alpha = Mathf.Lerp(1, 0, progress);
             time += Time.deltaTime;
 

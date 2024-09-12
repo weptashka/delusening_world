@@ -1,36 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
+using System;
 using UnityEngine;
 
-public class PlayerStorageData : MonoBehaviour
+public class PlayerStorageData
 {
+    public static event Action<int> CoinCountChnged;
+    public static event Action<int> HPCountChanged;
+
     private static readonly string COINS_KEY = "Coins";
     private static readonly string HP_KEY = "HP";
 
-    public static PlayerStorageData _instance;
-    public static PlayerStorageData Instance => _instance;
-
-    public void Init()
-    {
-        _instance = this;
-    }
-
-    public void Set(PickableType type, int count)
+    public static void SetPickableCount(PickableType type, int count)
     {
         switch (type)
         {
             case PickableType.Coin:
-                PlayerPrefs.SetInt(COINS_KEY, count + PlayerPrefs.GetInt(COINS_KEY));
+                count += PlayerPrefs.GetInt(COINS_KEY);
+                PlayerPrefs.SetInt(COINS_KEY, count);
+                CoinCountChnged?.Invoke(PlayerPrefs.GetInt(COINS_KEY));
                 break;
             case PickableType.HP:
-                PlayerPrefs.SetInt(HP_KEY, count + PlayerPrefs.GetInt(HP_KEY));
+                count += PlayerPrefs.GetInt(HP_KEY);
+                PlayerPrefs.SetInt(HP_KEY, count);
+                HPCountChanged?.Invoke(PlayerPrefs.GetInt(HP_KEY));
                 break;
         }
     }
 
-
-    public int Get(PickableType type)
+    public static int GetPickableCount(PickableType type)
     {
         switch (type)
         {

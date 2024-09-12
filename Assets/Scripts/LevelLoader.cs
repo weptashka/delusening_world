@@ -25,15 +25,6 @@ public class LevelLoader : MonoBehaviour
         _instance = this;
     }
 
-    //public void LoadLevel(string sceneName)
-    //{
-    //    if (_loadLevelCor != null)
-    //    {
-    //        StopCoroutine(_loadLevelCor);
-    //    }
-
-    //    _loadLevelCor = StartCoroutine(LoadCor(sceneName, string.Empty));
-    //}
 
     public void LoadLevel(string sceneName, string connectedPointId)
     {
@@ -47,11 +38,12 @@ public class LevelLoader : MonoBehaviour
         _loadLevelCor = StartCoroutine(LoadCor(sceneName, connectedPointId));
     }
 
+
     private IEnumerator LoadCor(string sceneName, string connectedPointId)
     {
         if (_currentScene != string.Empty)
         {
-            var unloadSceneAsync = SceneManager.UnloadSceneAsync(sceneName);
+            var unloadSceneAsync = SceneManager.UnloadSceneAsync(_currentScene);
 
             while (!unloadSceneAsync.isDone)
             {
@@ -59,12 +51,16 @@ public class LevelLoader : MonoBehaviour
             }
         }
 
-        var loadSceneAsync = SceneManager.LoadSceneAsync(_scenesPathStart + sceneName + _scenesPathEnd, LoadSceneMode.Additive);
+        var scenePathStart = _scenesPathStart + sceneName + _scenesPathEnd;
+
+        var loadSceneAsync = SceneManager.LoadSceneAsync(scenePathStart, LoadSceneMode.Additive);
 
         while (!loadSceneAsync.isDone) 
         {
             yield return null;
         }
+
+        _currentScene = scenePathStart;
 
         SceneLoaded?.Invoke(sceneName, connectedPointId);
     }

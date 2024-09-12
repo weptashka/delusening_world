@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEditor;
 
 public class StartWindow : Window
 {
@@ -16,20 +15,30 @@ public class StartWindow : Window
     [SerializeField] private Button _startButton;
     [SerializeField] private Button _quitButton;
 
-    private void Awake()
-    {
-        _levelLoader = LevelLoader.Instance;
-    }
+    private UISystem _uiSystem;
 
     public void Start()
     {
+        _levelLoader = LevelLoader.Instance;
+        _uiSystem = UISystem.Instance;
+
         _startButton.onClick.AddListener(OnStartButtonClick);
+        _quitButton.onClick.AddListener(OnQuitButtonClick);
     }
 
     private void OnStartButtonClick()
     {
-        UISystem.Instance.Close(WindowType.Start);
-        UISystem.Instance.OpenWindow(WindowType.Game, false);
+        _uiSystem.Close(WindowType.Start);
+        _uiSystem.OpenWindow(WindowType.Game, false);
         _levelLoader.LoadLevel(_levelSettings.LevelsQueue.First(), string.Empty);
+    }
+
+    private void OnQuitButtonClick()
+    {
+        Application.Quit();
+
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#endif
     }
 }

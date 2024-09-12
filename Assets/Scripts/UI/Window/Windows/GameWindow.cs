@@ -1,19 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using TMPro;
 using UnityEngine;
 
 public class GameWindow : Window
 {
     public override WindowType Type => WindowType.Game;
 
-    [SerializeField] private TMPro.TextMeshPro _coinCount;
-    [SerializeField] private TMPro.TextMeshPro _hpCount;
+    [SerializeField] private TMP_Text _coinCount;
+    [SerializeField] private TMP_Text _hpCount;
 
-    private PlayerStorageData _playerStarageData;
-
-    private void Update()
+    private void OnEnable()
     {
-        _coinCount.text = _playerStarageData.Get(PickableType.Coin).ToString();
-        _hpCount.text = _playerStarageData.Get(PickableType.HP).ToString();
+        PlayerStorageData.CoinCountChnged += OnCoinCountChanged; 
+        PlayerStorageData.HPCountChanged += OnHPCountChanged; 
+    }
+
+    private void OnDisable()
+    {
+        PlayerStorageData.CoinCountChnged -= OnCoinCountChanged;
+        PlayerStorageData.HPCountChanged -= OnHPCountChanged;
+    }
+
+    private void OnCoinCountChanged(int count)
+    {
+        _coinCount.text = count.ToString();
+    }
+    
+    private void OnHPCountChanged(int count)
+    {
+        _hpCount.text = count.ToString();
     }
 }
