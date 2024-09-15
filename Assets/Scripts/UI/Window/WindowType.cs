@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public enum WindowType
 {
     Start = 0,
     Game = 1,
     Load = 2,
-    Settings = 3
+    Menu = 3,
+    Settings = 4,
+    Map = 5,
+    Mission = 6,
 }

@@ -618,7 +618,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 817458929}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3654669, y: 0.06251053, z: -0.024607506, w: 0.92839694}
+  m_LocalRotation: {x: 0.3654669, y: 0.06251052, z: -0.024607502, w: 0.92839694}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1154,11 +1154,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2869030608526467065, guid: fa8414d9e3f731c40b8f27af288fa938, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -816.2266
       objectReference: {fileID: 0}
     - target: {fileID: 2869030608526467065, guid: fa8414d9e3f731c40b8f27af288fa938, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -294.4617
       objectReference: {fileID: 0}
     - target: {fileID: 2869030608526467065, guid: fa8414d9e3f731c40b8f27af288fa938, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1190,11 +1190,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2869030608526467065, guid: fa8414d9e3f731c40b8f27af288fa938, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -408.11328
       objectReference: {fileID: 0}
     - target: {fileID: 2869030608526467065, guid: fa8414d9e3f731c40b8f27af288fa938, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -147.23083
       objectReference: {fileID: 0}
     - target: {fileID: 2869030608526467065, guid: fa8414d9e3f731c40b8f27af288fa938, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1584,7 +1584,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1725189327}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.32720777, y: 0.065979384, z: -0.022909278, w: 0.9423678}
+  m_LocalRotation: {x: 0.3272078, y: 0.065979436, z: -0.022909297, w: 0.9423678}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
