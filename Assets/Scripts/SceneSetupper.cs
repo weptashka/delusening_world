@@ -31,13 +31,13 @@ public class SceneSetupper : MonoBehaviour
     private void OnSceneLoaded(string sceneName, string connectedPointId)
     {
         int connectedPointIdInt = 0;
-        Int32.TryParse(connectedPointId, out connectedPointIdInt);
+        int.TryParse(connectedPointId, out connectedPointIdInt);
 
         for (int i = 0; i < _spawnPoints.Length; i++)
         {
             if (connectedPointId.Equals(_spawnPoints[i].Id))
             {
-                Int32.TryParse(connectedPointId, out connectedPointIdInt);
+                int.TryParse(connectedPointId, out connectedPointIdInt);
                 SetupScene(connectedPointIdInt);
             }
             else 
@@ -50,6 +50,7 @@ public class SceneSetupper : MonoBehaviour
 
     public void SetupScene(int spawnPointIndex)
     {
-        Instantiate(_playerPrefab, _spawnPoints[spawnPointIndex].transform.position, Quaternion.identity);
+        _playerPrefab.transform.position = _spawnPoints[spawnPointIndex].transform.position;
+        //Instantiate(_playerPrefab, _spawnPoints[spawnPointIndex].transform.position, Quaternion.identity);
     }
 }

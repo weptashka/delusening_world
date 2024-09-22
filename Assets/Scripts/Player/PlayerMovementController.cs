@@ -1,13 +1,16 @@
 using ECM.Controllers;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PlayerMovementController : BaseCharacterController
 {
-    [SerializeField] private JoystickController _joystickController;
-    [SerializeField] private Transform _playerDirection;
+    private JoystickController _joystickController;
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        _joystickController = JoystickController.Instance;
+    }
 
     protected override void HandleInput()
     {

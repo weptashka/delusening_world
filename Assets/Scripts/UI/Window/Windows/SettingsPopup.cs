@@ -18,9 +18,6 @@ public class SettingsPopup : Popup
 
     private void OnGoToHomeButtonClick()
     {
-        _uiSystem.Close(WindowType.Menu);
-        _uiSystem.Close(WindowType.Settings);
-        _uiSystem.Close(WindowType.Game);
-        _uiSystem.OpenWindow(WindowType.Start, false);
+        _uiSystem.OpenWindow(WindowType.Start, true);
     }
 }

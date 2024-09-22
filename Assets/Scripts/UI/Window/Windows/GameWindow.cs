@@ -11,16 +11,9 @@ public class GameWindow : Window
 
     [Header("Buttons")]
     [SerializeField] private Button _menuButton;
+    [SerializeField] private Button _attackButton;
 
     private UISystem _uiSystem;
-
-    private void OnGoToHomeButtonClick()
-    {
-        _uiSystem.Close(WindowType.Menu);
-        _uiSystem.Close(WindowType.Settings);
-        _uiSystem.Close(WindowType.Game);
-        _uiSystem.OpenWindow(WindowType.Start, false);
-    }
 
     private void OnEnable()
     {
@@ -39,6 +32,7 @@ public class GameWindow : Window
         _uiSystem = UISystem.Instance;
 
         _menuButton.onClick.AddListener(OnMenuButtonClick);
+        _attackButton.onClick.AddListener(OnAttackButtonClick);
 
         _coinCount.text = PlayerStorageData.GetPickableCount(PickableType.Coin).ToString();
         _hpCount.text = PlayerStorageData.GetPickableCount(PickableType.HP).ToString();
@@ -46,7 +40,14 @@ public class GameWindow : Window
 
     private void OnMenuButtonClick()
     {
+        Debug.Log("OnMenuButtonClick");
         _uiSystem.OpenWindow(WindowType.Menu, true);
+        _uiSystem.OpenWindow(WindowType.Settings, true);
+    }
+    
+    private void OnAttackButtonClick()
+    {
+        Debug.Log("ATTACK");
     }
 
     private void OnCoinCountChanged(int count)

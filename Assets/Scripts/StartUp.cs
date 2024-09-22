@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +9,7 @@ public class StartUp : MonoBehaviour
 
     [SerializeField] private string _uiSceneName;
     [SerializeField] private string _startUpSceneName;
-    [SerializeField] private string _homeSceneName;
+    [SerializeField] private string _firstSceneName;
 
     [SerializeField] private LevelLoader _levelLoader;
 
@@ -33,7 +31,7 @@ public class StartUp : MonoBehaviour
 
         _levelLoader.SceneLoaded += LevelLoaderOnSceneLoaded;
 
-        _levelLoader.LoadLevel(_homeSceneName, string.Empty);
+        _levelLoader.LoadLevel(_firstSceneName, string.Empty);
     }
 
     private void LevelLoaderOnSceneLoaded(string s1, string s2)
@@ -47,11 +45,9 @@ public class StartUp : MonoBehaviour
     {
         float time = 0;
 
-        float progress = 0;
-
         while (time <= _hideTime)
-        { 
-            progress = time / _hideTime;
+        {
+            float progress = time / _hideTime;
 
             _splash.alpha = Mathf.Lerp(1, 0, progress);
             time += Time.deltaTime;

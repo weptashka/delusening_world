@@ -6,7 +6,7 @@ public class MenuPopup : Popup
     public override WindowType Type => WindowType.Menu;
 
     [Header("Buttons")]
-    [SerializeField] private Button _closeButton;
+    [SerializeField] private Button _backToGameButton;
     [SerializeField] private Button _settingsButton;
     [SerializeField] private Button _mapButton;
     [SerializeField] private Button _missionButton;
@@ -17,18 +17,18 @@ public class MenuPopup : Popup
     {
         _uiSystem = UISystem.Instance;
 
-        _closeButton.onClick.AddListener(OnCloseButtonClick);
+        _backToGameButton.onClick.AddListener(OnBackToGameButtonClick);
         _settingsButton.onClick.AddListener(OnSettingsButtonClick);
         _mapButton.onClick.AddListener(OnMapButtonClick);
         _missionButton.onClick.AddListener(OnMissionButtonClick);
     }
 
-    private void OnCloseButtonClick()
+    private void OnBackToGameButtonClick()
     {
-        _uiSystem.Close(WindowType.Menu);
         _uiSystem.Close(WindowType.Settings);
         _uiSystem.Close(WindowType.Map);
         _uiSystem.Close(WindowType.Mission);
+        _uiSystem.Close(WindowType.Menu);
     }
 
     private void OnSettingsButtonClick()

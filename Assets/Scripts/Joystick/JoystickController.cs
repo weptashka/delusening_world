@@ -6,124 +6,131 @@ using UnityEngine.EventSystems;
 
 #endregion
 
-    public class JoystickController : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
+public class JoystickController : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
+{
+    public event Action Clicked = delegate { };
+    public event Action<Vector2> Dragged = delegate { };
+    public event Action Released = delegate { };
+
+    [SerializeField] private float _minRad = 0f;
+    [SerializeField] private float _maxRad = 1f;
+    [SerializeField] private float _lerpPower = 1f;
+
+
+    [SerializeField] private Camera _uiCamera;
+
+    private Vector2 _currentPos = Vector2.zero;
+    private Vector2 _prevPos = Vector2.zero;
+    private Vector2 _resultDirection = Vector2.zero;
+
+    private Vector2 _inputDirection = Vector2.zero;
+
+    private float _speed = 0f;
+
+    private bool _isHolding = false;
+    private bool _isCameOut = true;
+
+    public Vector2 InputDirection => _inputDirection;
+
+    public float Speed => _speed;
+
+    public static JoystickController Instance { get; private set; }
+
+    private void Awake()
     {
-        public event Action Clicked = delegate { };
-        public event Action<Vector2> Dragged = delegate { };
-        public event Action Released = delegate { };
+        Instance = this;
+    }
 
-        [SerializeField] private float _minRad = 0f;
-        [SerializeField] private float _maxRad = 1f;
-        [SerializeField] private float _lerpPower = 1f;
+    private void Update()
+    {
+        Vector2 pos = GetPosition();
 
+        var posMagnitude = pos.sqrMagnitude;
 
-        [SerializeField] private Camera _uiCamera;
-
-        private Vector2 _currentPos = Vector2.zero;
-        private Vector2 _prevPos = Vector2.zero;
-        private Vector2 _resultDirection = Vector2.zero;
-
-        private Vector2 _inputDirection = Vector2.zero;
-
-        private float _speed = 0f;
-
-        private bool _isHolding = false;
-        private bool _isCameOut = true;
-
-        public Vector2 InputDirection => _inputDirection;
-
-        public float Speed => _speed;
-
-        private void Update()
+        if (posMagnitude > 0.01f)
         {
-            Vector2 pos = GetPosition();
-
-            var posMagnitude = pos.sqrMagnitude;
-
-            if (posMagnitude > 0.01f)
-            {
-                _resultDirection = pos.normalized;
-            }
-            else
-            {
-                _resultDirection = Vector2.zero;
-            }
-
-            _inputDirection = Vector2.Lerp(_inputDirection, _resultDirection, _lerpPower * Time.deltaTime);
+            _resultDirection = pos.normalized;
+        }
+        else
+        {
+            _resultDirection = Vector2.zero;
         }
 
-        private Vector2 GetTouchPosition()
-        {
-            if (!_isHolding)
-            {
-                return Vector2.zero;
-            }
+        _inputDirection = Vector2.Lerp(_inputDirection, _resultDirection, _lerpPower * Time.deltaTime);
+    }
 
-            Vector2 pos = _uiCamera.ScreenToViewportPoint(_currentPos);
-            return pos;
+    private Vector2 GetTouchPosition()
+    {
+        if (!_isHolding)
+        {
+            return Vector2.zero;
         }
 
-        private Vector2 GetPosition()
+        Vector2 pos = _uiCamera.ScreenToViewportPoint(_currentPos);
+        return pos;
+    }
+
+    private Vector2 GetPosition()
+    {
+        Vector2 rawStick = Vector2.zero;
+
+        if (_isHolding)
         {
-            Vector2 rawStick = Vector2.zero;
+            rawStick = GetTouchPosition() - _prevPos;
 
-            if (_isHolding)
+            if (rawStick.magnitude < _minRad && !_isCameOut)
             {
-                rawStick = GetTouchPosition() - _prevPos;
-
-                if (rawStick.magnitude < _minRad && !_isCameOut)
-                {
-                    _speed = 0.0f;
-                    rawStick = Vector2.zero;
-                }
-                else
-                {
-                    float f = Mathf.InverseLerp(_minRad, _maxRad, rawStick.magnitude);
-                    if (f < 0.1f)
-                    {
-                        f = 0.1f;
-                    }
-
-                    _speed = f;
-
-                    _isCameOut = true;
-                }
-
-                rawStick.Normalize();
-            }
-            else
-            {
-                _speed = 0;
-
-                _isCameOut = false;
-
+                _speed = 0.0f;
                 rawStick = Vector2.zero;
             }
+            else
+            {
+                float f = Mathf.InverseLerp(_minRad, _maxRad, rawStick.magnitude);
+                if (f < 0.1f)
+                {
+                    f = 0.1f;
+                }
 
-            return rawStick;
+                _speed = f;
+
+                _isCameOut = true;
+            }
+
+            rawStick.Normalize();
         }
-
-        void IDragHandler.OnDrag(PointerEventData eventData)
+        else
         {
-            _currentPos = eventData.position;
+            _speed = 0;
 
-            Dragged(eventData.delta);
+            _isCameOut = false;
+
+            rawStick = Vector2.zero;
         }
 
-        void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
-        {
-            _prevPos = _uiCamera.ScreenToViewportPoint(eventData.position);
-            _currentPos = eventData.position;
-
-            _isHolding = true;
-
-            Clicked();
-        }
-
-        void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
-        {
-            Released();
-
-            _isHolding = false;
-        }
+        return rawStick;
     }
+
+    void IDragHandler.OnDrag(PointerEventData eventData)
+    {
+        _currentPos = eventData.position;
+
+        Dragged(eventData.delta);
+    }
+
+    void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
+    {
+        _prevPos = _uiCamera.ScreenToViewportPoint(eventData.position);
+        _currentPos = eventData.position;
+
+        _isHolding = true;
+
+        Clicked();
+    }
+
+    void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
+    {
+        Released();
+
+        _isHolding = false;
+    }
+}

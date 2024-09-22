@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class UISystem : MonoBehaviour
 {
-    [SerializeField] private Window[] _windows;
-    [SerializeField] private List<Window> _openedWindows;
+    [SerializeField] private BaseWindow[] _windows;
+    [SerializeField] private List<BaseWindow> _openedWindows;
 
     public static UISystem Instance;
-    private Window _currentWindow;
+    private BaseWindow _currentWindow;
 
     private void Awake()
     {
@@ -20,9 +20,7 @@ public class UISystem : MonoBehaviour
 
     private void Start()
     {
-        _windows = GetComponentsInChildren<Window>(true);
-
-        //DontDestroyOnLoad(gameObject);
+        _windows = GetComponentsInChildren<BaseWindow>(true);
 
         foreach (var window in _windows)
         {
@@ -51,18 +49,16 @@ public class UISystem : MonoBehaviour
             return;
         }
 
-
-        if (_currentWindow != null)
+        if (_currentWindow != null && !windowToOpen.IsPopup) //если мы оккрываем не попап (окно) и текущее окно!=0
         {
             foreach (var window in _openedWindows)
             {
-                window.Close();
+                window.Close(); //закрываем всеокна в списке открытых
             }
-            _currentWindow.Close();
+
+            _currentWindow.Close(); // закрываем и текущее окно
+            _openedWindows.Clear();
         }
-        _openedWindows.Clear();
-
-
 
         windowToOpen.Open();
         _currentWindow = windowToOpen;
@@ -89,7 +85,7 @@ public class UISystem : MonoBehaviour
         }
 
         var indexOf = _openedWindows.IndexOf(windowToClose);
-        _openedWindows[indexOf].Close();
+        _openedWindows[indexOf].Close(); //странно
         _openedWindows.Remove(_openedWindows[indexOf]);
         _currentWindow = _openedWindows[^1];
     }
