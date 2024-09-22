@@ -8,6 +8,9 @@ public class PlayerStorageData
 
     private static readonly string COINS_KEY = "Coins";
     private static readonly string HP_KEY = "HP";
+    
+    private static readonly string CURRENT_LOAD_SPAWN_POINT_ID = "currentLoadSpawnPointId";
+    private static readonly string CURRENT_SCENE_NAME = "Scene_1";
 
     public static void SetPickableCount(PickableType type, int count)
     {
@@ -40,4 +43,24 @@ public class PlayerStorageData
         }
     }
 
+    public static void SetCurrentLoadSpawnPointId(string currentLoadSpawnPointId)
+    {
+        PlayerPrefs.SetString(CURRENT_LOAD_SPAWN_POINT_ID, currentLoadSpawnPointId);
+    }
+
+    public static string GetCurrentLoadSpawnPointId()
+    {
+        return PlayerPrefs.GetString(CURRENT_LOAD_SPAWN_POINT_ID);
+    }
+
+
+    public static void SetCurrentSceneName(string currentSceneName)
+    {
+        PlayerPrefs.SetString(CURRENT_SCENE_NAME, currentSceneName);
+    }
+
+    public static string GetCurrentSceneName()
+    {
+        return PlayerPrefs.GetString(CURRENT_SCENE_NAME);
+    }
 }

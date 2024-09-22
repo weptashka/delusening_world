@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using UnityEngine;
 
 
@@ -11,12 +7,9 @@ public class SceneSetupper : MonoBehaviour
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private SpawnPont[] _spawnPoints;
 
-
-    private LevelLoader _levelLoader;
-
     private void Awake()
     {
-        var currentLoadSpawnPointId = GlobalLevelData.CurrentLoadSpawnPointId;
+        var currentLoadSpawnPointId = PlayerStorageData.GetCurrentLoadSpawnPointId();
 
         if (currentLoadSpawnPointId.Equals(string.Empty))
         {
@@ -24,33 +17,33 @@ public class SceneSetupper : MonoBehaviour
         }
 
         var firstOrDefault = _spawnPoints.FirstOrDefault(x=>x.Id.Equals(currentLoadSpawnPointId));
-        _levelLoader = LevelLoader.Instance;
         LevelLoader.Instance.SceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        LevelLoader.Instance.SceneLoaded -= OnSceneLoaded;
+
     }
 
     private void OnSceneLoaded(string sceneName, string connectedPointId)
     {
-        int connectedPointIdInt = 0;
-        int.TryParse(connectedPointId, out connectedPointIdInt);
 
         for (int i = 0; i < _spawnPoints.Length; i++)
         {
             if (connectedPointId.Equals(_spawnPoints[i].Id))
             {
-                int.TryParse(connectedPointId, out connectedPointIdInt);
-                SetupScene(connectedPointIdInt);
-            }
-            else 
-            {
-                Debug.Log($"There is No Spawn Point With Such Id {connectedPointId} On This Scene");
-
+                SetupScene(i);
+                Debug.Log($"connectedPointIndex : {i}, id : {_spawnPoints[i].Id}");
+                return;
             }
         }
     }
 
     public void SetupScene(int spawnPointIndex)
     {
+        //Debug.Log($"_spawnPoints[spawnPointIndex].transform.positionBEGINNING : {_spawnPoints[spawnPointIndex].transform.position}");
+        //Debug.Log($"_playerPrefab.transform.positionBEGINNING : {_playerPrefab.transform.position}");
         _playerPrefab.transform.position = _spawnPoints[spawnPointIndex].transform.position;
-        //Instantiate(_playerPrefab, _spawnPoints[spawnPointIndex].transform.position, Quaternion.identity);
     }
 }

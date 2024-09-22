@@ -30,7 +30,7 @@ public class StartWindow : Window
     {
         _uiSystem.Close(WindowType.Start);
         _uiSystem.OpenWindow(WindowType.Game, false);
-        _levelLoader.LoadLevel(_levelSettings.LevelsQueue.First(), string.Empty);
+        _levelLoader.LoadLevel(PlayerStorageData.GetCurrentSceneName(), PlayerStorageData.GetCurrentLoadSpawnPointId()) ;
     }
 
     private void OnQuitButtonClick()

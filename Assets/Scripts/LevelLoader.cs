@@ -31,7 +31,8 @@ public class LevelLoader : MonoBehaviour
             StopCoroutine(_loadLevelCor);
         }
 
-        GlobalLevelData.CurrentLoadSpawnPointId = connectedPointId;
+        PlayerStorageData.SetCurrentLoadSpawnPointId(connectedPointId);
+        PlayerStorageData.SetCurrentSceneName(sceneName);
 
         _loadLevelCor = StartCoroutine(LoadCor(sceneName, connectedPointId));
     }

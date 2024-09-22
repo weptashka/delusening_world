@@ -9,14 +9,28 @@ public class StartUp : MonoBehaviour
 
     [SerializeField] private string _uiSceneName;
     [SerializeField] private string _startUpSceneName;
-    [SerializeField] private string _firstSceneName;
 
     [SerializeField] private LevelLoader _levelLoader;
 
+    private string _lastPlayedSceneName;
+    private string _lastSpawnPoint;
+
     private void Awake()
     {
-        _levelLoader.Init();
+        _lastPlayedSceneName = PlayerStorageData.GetCurrentSceneName();
+        if (_lastPlayedSceneName == null || _lastPlayedSceneName == "")
+        {
+            _lastPlayedSceneName = "Scene_1";
+        }
 
+        _lastSpawnPoint = PlayerStorageData.GetCurrentLoadSpawnPointId();
+        if (_lastSpawnPoint == null || _lastSpawnPoint == "")
+        {
+            _lastSpawnPoint = "0";
+        }
+
+        _levelLoader.Init();
+   
         StartCoroutine(Load());
     }
 
@@ -31,7 +45,7 @@ public class StartUp : MonoBehaviour
 
         _levelLoader.SceneLoaded += LevelLoaderOnSceneLoaded;
 
-        _levelLoader.LoadLevel(_firstSceneName, string.Empty);
+        _levelLoader.LoadLevel(_lastPlayedSceneName, _lastSpawnPoint);
     }
 
     private void LevelLoaderOnSceneLoaded(string s1, string s2)
