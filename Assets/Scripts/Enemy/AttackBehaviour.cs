@@ -15,7 +15,7 @@ public class AttackBehaviour : EnemyBehaviour
     {
         if (_attackTrigger.IsTriggered)
         {
-            //_enemyController.EnemyAttakHandler.Attack(_attackTrigger.TriggeredValue);
+            _enemyController.EnemyAttakHandler.Attack();
         }
         else
         {

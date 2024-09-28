@@ -1,6 +1,4 @@
-﻿
-
-public class InactionBehaviour : EnemyBehaviour
+﻿public class InactionBehaviour : EnemyBehaviour
 {
     protected readonly PlayerTrigger _chaseTrigger;
 

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class PlayerMovementController : BaseCharacterController
 {
+
+    [SerializeField] Animator _playrAnimator;
+
     private JoystickController _joystickController;
 
     public override void Awake()
@@ -27,15 +30,14 @@ public class PlayerMovementController : BaseCharacterController
                 z = _joystickController.InputDirection.y
             };
 
-
             //if (transform.rotation != Camera.main.transform.localRotation)
             //{
             //    moveDirection = transform.localRotation * moveDirection;
-                
+
             //}
             //else
             //{
-                //moveDirection = Camera.main.transform.localRotation * moveDirection;
+            //moveDirection = Camera.main.transform.localRotation * moveDirection;
             //}
         }
     }

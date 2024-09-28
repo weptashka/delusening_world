@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 public class RigidbodyMоvement
 {
@@ -21,7 +22,7 @@ public class RigidbodyMоvement
         public void MoveByDirectionToPoint(Vector3 targetPoint)
         {
             var direction = (targetPoint - _rb.transform.position).normalized;
-            _rb.velocity = new Vector3(direction.x, 0, direction.z) * _speed;
+            _rb.transform.Translate(new Vector3(-direction.x, 0, -direction.z) * _speed * Time.deltaTime);
         }
 
         public void Stop()

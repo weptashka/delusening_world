@@ -17,6 +17,7 @@ public class ChaseBehaviour : EnemyBehaviour
         _enemyController = enemyController;
     }
 
+
     public override void Tick()
     {
         if (_attackTrigger.IsTriggered)
@@ -29,7 +30,9 @@ public class ChaseBehaviour : EnemyBehaviour
             Debug.Log("CHASE MODE");
             var playerPosition = _chaseTrigger.TriggeredValue.transform.position;
 
-            _enemyController.RigidbodyMovement.MoveByDirectionToPoint(playerPosition);
+            Vector3 direction = new Vector3(-playerPosition.x + _enemyController.Rigidbode.position.x, 0, -playerPosition.z + _enemyController.Rigidbode.position.z);
+            Debug.LogWarning(direction);
+            _enemyController.Rigidbode.transform.Translate(direction * _enemyController.Speed * 0.1f * Time.deltaTime);
         }
         else
         {
@@ -40,15 +43,6 @@ public class ChaseBehaviour : EnemyBehaviour
 
     public override void Exit()
     {
-        _enemyController.RigidbodyMovement.Stop();
-    }
 
-#if UNITY_EDITOR
-    public override void DrawGizmo()
-    {
-        base.DrawGizmo();
-        Gizmos.color = Color.gray;
-        Gizmos.DrawLine(_enemyController.transform.position, _chaseTrigger.TriggeredValue.transform.position);
     }
-#endif
 }

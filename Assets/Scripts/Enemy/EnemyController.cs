@@ -18,15 +18,24 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private int _damage;
     [Header("Chase")]
     [SerializeField] private LayerMask _layerMask;
+    [Space]
+    //[SerializeField] private LifeHandler _lifeHandler;
 
     private EnemyBehaviourController _enemyBehaviourController;
-    private RigidbodyMîvement _rigidbodyMovement;
+    private EnemyAttakHandler _enemyAttakHandler;
+    
 
-    public RigidbodyMîvement RigidbodyMovement => _rigidbodyMovement;
+    //public LifeHandler LifeHandler => _lifeHandler
+    public EnemyAttakHandler EnemyAttakHandler => _enemyAttakHandler;
+    public float Speed => _speed;
+    public Rigidbody Rigidbode => _rb;
+    
 
     private void Awake()
     {
-        _rigidbodyMovement = new RigidbodyMîvement(_rb, _speed);
+        _enemyAttakHandler = new EnemyAttakHandler(_attackDelay, _damage);
+
+        CreateEnemyBehaviourController();
     }
 
 
@@ -37,10 +46,7 @@ public class EnemyController : MonoBehaviour
 
     private void CreateEnemyBehaviourController()
     {
-
         _enemyBehaviourController = new EnemyBehaviourController(_chaseTrigger, _attackTrigger, this);
         _enemyBehaviourController.SwitchBehaviour<InactionBehaviour>();
     }
-
-
 }
